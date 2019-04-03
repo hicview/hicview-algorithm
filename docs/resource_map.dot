@@ -1,0 +1,69 @@
+digraph
+{
+	nodesep=0.5;
+	edge[fontsize=20];
+	
+	// States
+	node[shape=circle fillcolor="#1a6ef4" style=filled fixedsize=true height=2 fontsize=20 fontcolor=white];
+	
+	
+	build_resource_map[label="build resource\nmap"];
+	output_resource_map[label="output resource\nmap"];
+	
+			
+	// Checkpoints
+	node[shape=square fillcolor="#c61df4" style=filled]
+	start;
+	load_data_f[label="finished loading\n data ?"];
+	load_link_method_f[label="finished loading\n methods?"];
+	build_rm_f[label="finished building\n resource map?"];
+	end;
+
+	// Fail States
+	node[shape=circle fillcolor="#f49511" style=filled fontcolor=white];
+	built_failure;
+	unexpected_built;
+	unexpected_data;
+
+	// Complete Dev
+	node[shape=circle fillcolor="#ff0000" style=filled fixedsize=true height=2.5 fontsize=20 fontcolor=white]
+	
+	// Undergoing
+	node[shape=circle style=filled fixedsize=true height=2.5 fontsize=20 fontcolor=white fillcolor="#c570f9"]
+	input_instructions;
+	load_data;	
+	load_link_methods[label="load link\nmethods"];
+	
+	// Plot
+	subgraph cluster_user_level
+	{
+		fontsize=30;
+		label="Resource Map State Machine" ;
+		
+		{
+			rank=same;
+
+			start -> input_instructions[label="Get Instructions"];
+			input_instructions -> load_data[label="Load Data"];
+			load_data -> load_data_f[label="Data Completeness\n Check"];
+			load_data_f -> unexpected_data;
+		}
+		load_data_f -> load_link_methods[label="Load required\n link methods"];
+		{
+			rank=same;			
+			load_link_methods -> load_link_method_f[label="Check required\n methods"];
+			load_link_method_f -> build_resource_map[label="Built resource\n map using\n data & links"];
+			build_resource_map -> unexpected_built;
+		}
+		build_resource_map -> build_rm_f[label="Built Completeness\n Check"];
+		build_rm_f -> output_resource_map;
+		output_resource_map -> end;
+
+		unexpected_built -> built_failure;
+		unexpected_data -> built_failure;
+		built_failure -> end;
+		
+	}
+	
+
+}

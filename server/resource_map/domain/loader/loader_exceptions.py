@@ -1,0 +1,3 @@
+class LoaderNotFoundException(Exception):
+    pass
+

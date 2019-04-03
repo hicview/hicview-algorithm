@@ -1,0 +1,133 @@
+digraph
+{
+	nodesep=0.5;
+	// Server side 
+	node[shape=circle fillcolor="#1a6ef4" style=filled fixedsize=true height=2.5 fontsize=20]
+	
+	
+	
+	// Web side
+	node[shape=square fillcolor="#c61df4" style=filled fontcolor=black]
+	web_gui;
+	web_viewer;
+	
+
+	view_options;
+	
+	division_2d_matrix;
+	
+	
+
+	resource_map_js_constructor;
+	bio_geometry_render;
+	
+	
+
+	// Complete Dev
+	node[shape=circle fillcolor="#ff0000" style=filled fixedsize=true height=2.5 fontsize=20 fontcolor=white]
+
+	algorithms;
+	file_io;
+	hic;
+	sequence;
+	model3d;
+	resource_map;
+	map_rules;
+	app_retrieve_rm;
+	app_update_rm;
+	app_delete_rm;
+	restful_api;
+	
+	app_generate_rm;
+	
+	// Undergoing
+	node[shape=circle style=filled fixedsize=true height=2.5 fontsize=20 fontcolor=white fillcolor="#f7626f"]
+	geometry;
+	material;
+	division_3d_model;
+	division_1d_sequence;
+
+	
+	// Plot
+	subgraph cluster_user_level
+	{
+		label="User Interface";
+		fontsize=20
+		{
+			rank=same;
+			holder_1[style=invisible];
+			holder_2[style=invisible];
+			restful_api -> web_gui[dir=both label="                 "];
+			web_gui -> web_viewer[dir=both]
+		}
+	}
+	
+	restful_api -> app_delete_rm;
+	restful_api -> app_generate_rm;
+	restful_api -> app_retrieve_rm;
+	restful_api -> app_update_rm;
+	web_gui -> view_options;
+	web_viewer -> bio_geometry_render;
+	web_viewer -> resource_map_js_constructor;
+	
+	
+
+	subgraph cluster_application_level{
+		label="Application Layer"
+		fontsize=20
+		{
+			rank=same;
+			app_delete_rm;
+			app_generate_rm;
+			app_retrieve_rm;
+			app_update_rm;
+			view_options;
+			
+		}
+	}
+		
+	app_delete_rm -> resource_map;
+	app_generate_rm -> resource_map;
+	app_retrieve_rm -> resource_map;
+	app_update_rm -> resource_map;
+	view_options -> bio_geometry_render;
+
+	subgraph cluster_hic_domain_level
+	{
+		label="Domain Layer"
+		fontsize=20
+		{
+			rank=same;
+		
+			map_rules -> resource_map_js_constructor[dir=both];
+			resource_map -> map_rules[dir=both];
+			bio_geometry_render;
+		}
+		
+	}
+	resource_map -> hic;
+	resource_map -> sequence;	
+	resource_map -> model3d;
+
+	bio_geometry_render -> {division_1d_sequence, division_2d_matrix, division_3d_model};
+	
+	{division_1d_sequence, division_2d_matrix, division_3d_model} -> {material, geometry};
+	{hic, sequence, model3d} -> algorithms;
+	{hic, sequence, model3d} -> file_io;
+	
+	subgraph cluster_infrastructure_level
+	{
+		label="Infrastructure Layer"
+		fontsize=20
+		{
+			rank=same;
+			holder_5[style=invisible]
+	
+			algorithms;
+			file_io;
+			geometry;
+			material;
+			
+		}		
+	}
+}

@@ -1,0 +1,119 @@
+
+
+* HiC Viewer Web
+
+** Architecture
+   #+BEGIN_SRC dot :file img/Architecture_design.png :export results
+digraph
+{
+	nodesep=0.5;
+	// Server side 
+	node[shape=circle fillcolor="#1a6ef4" style=filled fixedsize=true height=2.5 fontsize=20 fontname="times bold"]
+	restful_api;
+	
+	app_generate_rm;
+	app_retrieve_rm;
+	app_update_rm;
+	app_delete_rm;
+		
+	resource_map;
+	map_rules;
+	hic;
+	sequence;
+	model3d;
+
+	algorithms;
+	file_io;
+	
+
+		
+		
+	// Web side
+	node[shape=square fillcolor="#c61df4" style=filled]
+	web_gui;
+
+	visualize_rm;
+
+	bio_render_options;
+
+	render_infra;
+
+	// Plot
+	subgraph cluster_user_level
+	{
+		label="User Interface";
+		fontsize=20
+		{
+			rank=same;
+			holder_1[style=invisible];
+			holder_2[style=invisible];
+			restful_api -> web_gui[dir=both label="                 "];	
+		}
+	}
+	
+	restful_api -> app_delete_rm;
+	restful_api -> app_generate_rm;
+	restful_api -> app_retrieve_rm;
+	restful_api -> app_update_rm;
+	web_gui -> visualize_rm;
+
+	subgraph cluster_application_level{
+		label="Application Layer"
+		fontsize=20
+		{
+			rank=same;
+			app_delete_rm;
+			app_generate_rm;
+			app_retrieve_rm;
+			app_update_rm;
+			visualize_rm;
+		}
+	}
+		
+	app_delete_rm -> resource_map;
+	app_generate_rm -> resource_map;
+	app_retrieve_rm -> resource_map;
+	app_update_rm -> resource_map;
+	visualize_rm -> bio_render_options;
+
+	subgraph cluster_hic_domain_level
+	{
+		label="Domain Layer"
+		fontsize=20
+		{
+			rank=same;
+			holder_3[style=invisible]
+		
+			map_rules -> bio_render_options[dir=both];
+			resource_map -> map_rules[dir=both];
+			bio_render_options;
+		}	
+	}
+	resource_map -> hic;
+	resource_map -> sequence;
+	resource_map -> model3d;
+	
+	{hic, sequence, model3d} -> algorithms;
+	{hic, sequence, model3d} -> file_io;
+	bio_render_options -> render_infra;
+	
+	subgraph cluster_infrastructure_level
+	{
+		label="Infrastructure Layer"
+		fontsize=20
+		{
+			rank=same;
+			holder_5[style=invisible]
+	
+			algorithms;
+			file_io;
+			render_infra;
+		}		
+	}
+}
+   #+END_SRC
+
+   #+RESULTS:
+   [[file:img/Architecture_design.png]]
+
+** 

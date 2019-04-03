@@ -1,0 +1,2 @@
+class TreeNodeNonExistError(KeyError):
+    pass

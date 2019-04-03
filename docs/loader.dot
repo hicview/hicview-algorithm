@@ -1,0 +1,28 @@
+digraph
+{
+	nodesep=0.5
+	node[shape=circle fixedsize=true height=2]
+	loader_manager;
+
+	loader;
+
+	matrix_3_columns_loader;
+	bed_loader;
+
+	{
+		rank = same;
+		loader_manager;
+	}
+	loader_manager -> loader;
+	{
+		rank=same
+		loader;
+	}
+	loader -> matrix_3_columns_loader;
+	loader -> bed_loader;
+	{
+		rank=same;
+		matrix_3_columns_loader;
+		bed_loader;
+	}
+}

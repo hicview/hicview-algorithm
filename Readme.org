@@ -1,0 +1,62 @@
+* HiC 3D Viewer - web Project
+
+** Progress Sharing
+   - docs/ folder keeps all the documents & projects updates. docs/文件夹里记录所有项目相关的文档和更新
+   - news keeps all major updates in this project. news文件里记录主要功能更新和项目进展
+   - screenshots/ folder keeps all the demo & progress image. screenshots/文件夹记录所有demo和进展的展示图片
+   - server/ keeps the source code of server. server/ 文件夹记录服务器源代码
+   - web/ keeps the source code of web client. web/ 文件夹记录网页js源代码
+   - Issues Board. [[https://gitlab.com/HongpengM/hic3dviewer-cpp/boards]] 项目Issue的进展状况
+   - Code Coverage [[https://codecov.io/gl/HongpengM/hic3dviewer-web][Codecov Page]]
+   - Code Review [[https://app.codacy.com/project/HongpengM/hic3dviewer-web/dashboard?branchId=10876493][Codacy Page]]
+
+
+** Description
+
+*** Progress Information**
+    [[https://gitlab.com/HongpengM/hic3dviewer-web/raw/master/docs/design.png]]
+    
+    红色：开发基本完成
+    
+    浅红色：开发进度中
+
+** Installation
+
+*** Requirements
+    - python
+    - django
+    - javascript
+    - browser that supports WebGL
+   
+
+     
+** BackEnd
+
+*** Run Unittest
+    #+BEGIN_SRC sh
+    # Test all available unittests
+    python -m unittest discover
+    # Test specific test
+    # For example, test the algorithms module
+    python -m unittest test.test_algorithms
+    #+END_SRC
+
+** Django Server
+
+*** Requirements
+    #+BEGIN_SRC bash
+      pip install django djangorestframework markdown django_filters mysqlclient
+    #+END_SRC
+
+*** Dev environment setup
+    #+BEGIN_SRC bash
+      virtualenv --python=python3.6 hic
+      source hic/bin/activate
+      pip install django djangorestframework markdown django_filters mysqlclient
+      cd <project_root>
+      ./run_env.sh -sv
+      cd <django_server path>
+      python manage.py makemigrations
+      python manage.py migrate
+      python manage.py runserver
+    #+END_SRC
